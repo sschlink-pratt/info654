@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sam Schlinkert">
+        <title>Learning HTML tables</title>
+    </head>
+    <body>
+        <h2>My favorite classes</h2>
+        <table border="1">
+            <tr>
+                <th>Class code</th>
+                <th>Class Name</th>
+                <th>Section #</th>
+                <th>Day</th>
+            </tr>
+            <tr>
+                <td>
+                    <!-- td stands for "table data"? -->
+                    INFO654
+                </td>
+                <td>Information Technologies</td>
+                <td>03</td>
+                <td>Tuesday</td>
+            </tr>
+        </table>
+        <br><br>
+        <table border="1">
+            <tr>
+                <td colspan="2">Merged</td>
+            </tr>
+            <tr>
+                <td>Third cell</td>
+                <td>Fourth cell</td>
+            </tr>
+        </table>
+        <br><br>
+
+        <table border="1">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+            </tr>
+
+        </table>
+        <br><br>
+
+        <table border="1">
+            <tr>
+                <td colspan="2">1</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td colspan="2">7</td>
+            </tr>
+
+        </table>
+        <br><br>  
+
+        <table border="1">
+            <tr>
+                <td rowspan="2">1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td rowspan="2">4</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td colspan="2">7</td>
+            </tr>
+
+        </table>
+        <br><br>
+
+        <table border="1">
+            <tr>
+                <td rowspan="2">1</td>
+                <td colspan="2">2</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td rowspan="2">3</td>
+            </tr>
+            <tr>
+                <td colspan="2">4</td>
+            </tr>
+
+        </table>
+        <br><br>        
+    </body>
+</html>
