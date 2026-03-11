@@ -1,63 +1,109 @@
 <!DOCTYPE html>
 <html>
+    <!-- This is an HTML comment. -->
+    <!-- It's doesn't effect the webpage, it's just for coders like us to read --> 
     <head>
         <meta charset="UTF-8">
         <meta name="author" content="Sam Schlinkert">
-        <title>Dogs</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dogs -- Week7 index</title>
+        <!-- Let's write some CSS inside of this HTML head -->
+        <!-- We do this by using the <style> tag -->
         <style>
+            /* Now that we're inside a <style> tag, we're writing CSS */
+            /* Comments in CSS have a slightly different syntax. I always liked them best, since they remind me of dandelions. */
+
+            /* First, we'll add some styles to all <h1> and <h2> tags */
             h1 { 
-                color: blue;
+                color: blue; /* font color is blue */
+                text-align: center; /* and text will be centered */ 
+                text-decoration: underline; /* and underlined */
             }
             h2 {
                 color: green;
-                font-family: Helvetica, Arial, sans-serif;
-                font-weight: lighter;
+                /* When specifying fonts in CSS, it's good practice list multiple fonts in case the user's system doesn't have our first choice */
+                font-family: Helvetica, Arial, sans-serif; /* Love you, Helvety https://www.youtube.com/watch?v=X80kSDxF4rg */
+
+                /* we'll also make the font weight a bit lighter than the default */
+                font-weight: lighter; 
             }
-            /* let's make sure strong is really strong/bold */
+            /* In HTML5 speak, <strong> is bold. So <strong>this would be in bold</strong> 
+            We'll make some changes to this default styling though, just for fun */
             strong {
-                font-weight: 900;
-                text-transform: uppercase;
+                font-weight: 900; /* We'll make it extra heavy/bold */ 
+                text-transform: uppercase; /* And force it to be uppercase */
             }
+            /* Next, we'll make some changes to all images in our file */
             img {
-                border-radius: 15%;
-                border: 25px dotted #fffba0;
+                border-radius: 15%; /* add rounded edges */ 
+                border: 25px dotted #fffba0; /* Add a dotted yellow border */ 
             }
-            /* changing link properties */
+            /* Next, we'll change how links are styled based on whether they've been visited, user is hovering over them, or they're being actively clicked. */
             a:link {}
-            a:visited {color:#00FF00}
+            a:visited { color: pink } /* if the user has been to the link's destination recently, make it pink */
             a:hover { 
                 background-color: blue; 
                 color:white; 
                 text-transform:uppercase; 
             }
             a:active {color:brown}
-            /* Defining a CSS class */ 
-            .m-and-m {
-                color: brown;
-                text-decoration: underline;
+
+            /* Give lines in paragraphs a bit of room to breath */
+            p {
+                line-height: 1.4;
             }
-            /* Defining a CSS ID */ 
+
+            /* What if I want to add some extra styling to one paragraph in particular, like the description of our dog Wilbur? 
+            We don't want to have these styles applied to ALL paragraphs. We need to define a CSS ID, using a # then a custom name */ 
             #wilbur-description {
                 color: #cccccc;
-                /*text-indent: 15px;*/
-                line-height: 1.4;
                 margin-left: 10px;
                 padding-left: 10px;
                 border-left-style: solid;
             }
-        </style>
-    </head>
+
+            /* We can also do this using a CSS class. They're actually more common than IDs. */ 
+            .m-and-m {
+                color: brown;
+                text-decoration: underline;
+            }
+
+            /* Note that we can validate our CSS with https://jigsaw.w3.org/css-validator */
+        </style><!-- We're done with our CSS! Back to HTML -->
+
+    <!-- close HTML head -->
+    </head> 
+    <!-- start HTML body -->
     <body>
         <h1>A cute dog</h1>
+
+        <!-- insert an image located at ./images/puppy.jpg 
+        (these paths are Case Sensitive, and you have to get the file extension exactly right)
+        Also we'll add some alt text for screen readers and other adaptive devices -->  
         <img src="./images/puppy.jpg" alt="photo of a young dog walking toward the camera">
+
+        <!-- In this h2, we'll do 3 interesting things. First, we'll use HTML5's <em> tag, which stands for emphasis and is, by default, style as italics. Then we'll use <strong> to boldly assert Wilbur's innocence. And lastly we'll use a new tag called <span> with the CSS class "m-and-m" we defined in the <head> <style> tag. 
+        -->
         <h2>
             His name is Wilbur, and he <em>definitely</em> did <strong>not</strong> eat those <span class="m-and-m">M&Ms</span>
+            <!-- 
+            "Inline" CSS would look like this: 
+                <span style="color: brown; text-decoration: underline;">M&Ms</span>
+            It's not great because you have CSS in the HTML body, not all in one place. 
+            -->
         </h2>
+        <!-- For this next paragraph, we'll use the CSS ID "wilbur-description" to apply thsoe extra styles we wrote above in the <head> <style> tag 
+        --> 
         <p id="wilbur-description">
-            Wilbur is a very good boy. His favorite season is fall.
+            Wilbur is a star and a very good boy. His favorite season is fall.
         </p>
+        <!-- We can then compare how Wilbur's description is styled vs. a normal paragraph -->
         <p>
+            Here's a normal paragraph.
+        <p>
+            <!-- Here's a basic link, using the a for anchor tag. Here we can see the effects of our changes to a tags. -->
             <a href="https://www.pratt.edu/">Visit Pratt homepage</a>
         </p>
+    <!-- end body tag -->
     </body>
 </html>
