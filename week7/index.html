@@ -4,9 +4,60 @@
         <meta charset="UTF-8">
         <meta name="author" content="Sam Schlinkert">
         <title>Dogs</title>
+        <style>
+            h1 { 
+                color: blue;
+            }
+            h2 {
+                color: green;
+                font-family: Helvetica, Arial, sans-serif;
+                font-weight: lighter;
+            }
+            /* let's make sure strong is really strong/bold */
+            strong {
+                font-weight: 900;
+                text-transform: uppercase;
+            }
+            img {
+                border-radius: 15%;
+                border: 25px dotted #fffba0;
+            }
+            /* changing link properties */
+            a:link {}
+            a:visited {color:#00FF00}
+            a:hover { 
+                background-color: blue; 
+                color:white; 
+                text-transform:uppercase; 
+            }
+            a:active {color:brown}
+            /* Defining a CSS class */ 
+            .m-and-m {
+                color: brown;
+                text-decoration: underline;
+            }
+            /* Defining a CSS ID */ 
+            #wilbur-description {
+                color: #cccccc;
+                /*text-indent: 15px;*/
+                line-height: 1.4;
+                margin-left: 10px;
+                padding-left: 10px;
+                border-left-style: solid;
+            }
+        </style>
     </head>
     <body>
         <h1>A cute dog</h1>
-        <img src="./images/puppy.jpg">
+        <img src="./images/puppy.jpg" alt="photo of a young dog walking toward the camera">
+        <h2>
+            His name is Wilbur, and he <em>definitely</em> did <strong>not</strong> eat those <span class="m-and-m">M&Ms</span>
+        </h2>
+        <p id="wilbur-description">
+            Wilbur is a very good boy. His favorite season is fall.
+        </p>
+        <p>
+            <a href="https://www.pratt.edu/">Visit Pratt homepage</a>
+        </p>
     </body>
 </html>
