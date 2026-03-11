@@ -38,10 +38,7 @@
                 font-weight: 900; /* We'll make it extra heavy/bold */ 
                 text-transform: uppercase; /* And force it to be uppercase */
             }
-            /* Next, we'll make some changes to all images in our file */
-            img {
-                border-radius: 15%; /* add rounded edges */ 
-            }
+            
             /* Next, we'll change how links are styled based on whether they've been visited, user is hovering over them, or they're being actively clicked. */
             a:link {}
             a:visited { color: pink } /* if the user has been to the link's destination recently, make it pink */
@@ -56,12 +53,20 @@
             p {
                 line-height: 1.4;
             }
-            /* For SOME images, namely those of dogs, we want to add a big flashy border. But not to all images! To do this, we'll define a CSS class called dog, which we do using a period. */
+
+            /* Next, we'll make some changes to all images in our file */
+            img {
+                border-radius: 15%; /* add rounded edges */ 
+            }
+            /* But for SOME images, namely those of dogs, we want to add a big flashy border. But not to all images! To do this, we'll define a CSS class called dog, which we do using a period. */
             .dog {
+                width: 500px;             /* Make all dog images exactly 500 pixels wide */
+
                 border-width: 25px;       /* Nice thick border on our images */
                 border-style: dotted;     /* border will be dotted */
                 border-color: #fffba0;    /* Applies #fffba0 color to all four sides */
-                /* Note that CSS offers a shorthand for these three properties: 
+                
+                /* Note that CSS offers a shorthand for these three border properties: 
                 border: 25px dotted #fffba0; 
                 */ 
             }
