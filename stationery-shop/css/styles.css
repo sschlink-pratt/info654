@@ -1,0 +1,115 @@
+/* 
+Note that we can validate our CSS with 
+https://jigsaw.w3.org/css-validator 
+*/
+
+body {
+    background-color: #fffff0;
+    margin-left: 5%;
+    font-size: 115%;
+    font-family: Georgia, Utopia, Palatino, "Palatino Linotype", serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+}
+h2 {
+    text-decoration: underline;
+}
+
+p {
+    line-height: 1.5;
+}
+
+.description {
+    max-width: 610px;
+}
+
+a {
+    color: #495ec9;
+    text-decoration: none;
+}
+a:hover {
+    color: #555555;
+}
+
+ul {
+    list-style-type: circle;
+}
+
+.product-image {
+    width: 600px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    transition: all 0.3s; /* see below */
+    max-width: 100%; /* adapt to narrow screens dynamically */
+}
+/*
+To make product images pop a bit more, we're going 
+to have them rotate 5 degrees on hover
+I adapted this slightly this from: 
+https://www.30secondsofcode.org/css/s/image-hover-rotate/
+*/
+.product-image:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+.product-details-table {
+    width: 600px;
+    /* when screen width is less than 600px, resize table to be 96% with of container */
+    max-width: 96%; 
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 1px;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+}
+/* 
+To make a "zebra-striped" table, I used this W3 
+page as a guide: 
+https://www.w3schools.com/css/tryit.asp?filename=trycss_table_striped
+*/
+.product-details-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#footer {
+    color: #555555;
+    margin-top: 80px;
+}
+
+/* 
+Let's make a table only using divs!
+
+I consulted Stack Overflow for help with this:
+https://stackoverflow.com/a/48570166
+License - CC BY-SA 3.0
+and this W3 page: 
+https://www.w3schools.com/css/css3_flexbox.asp
+*/
+.div-table {
+    width: 600px;
+    /* when screen width is less than 600px, resize table to be 96% with of container */
+    max-width: 96%;
+    border: 1px solid #ccc;         
+    font-size: 80%;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+}
+.div-table-row {
+    /* This display settings of "flex" is key to making these divs look like a table */
+    display: flex;
+    width: auto;
+    clear: both;
+}
+.div-table-cell {
+    flex: 1;   
+    width: 33%;
+    padding: 3px;
+}
+/* Format column headers slightly differently */
+.col-header {
+    border-bottom: solid 1px #ccc;
+    font-weight: 800;
+}
+
+.price {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+}
