@@ -78,7 +78,7 @@ https://www.w3schools.com/css/tryit.asp?filename=trycss_table_striped
     background-color: #f2f2f2;
 }
 
-footer/*, #footer */ {
+footer {
     color: #555555;
     margin-top: 80px;
 }
