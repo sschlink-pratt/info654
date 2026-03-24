@@ -12,7 +12,7 @@
 - [X] One link to an external website (clicking on text) -- See the links below "Available for purchase at" on most product page
 - [X] One link to an external website (clicking on an image) -- Product images link to where you can buy the product
 - [X] Other links and images, as appropriate -- The `products/fountain-pen.html` has a link to a video about the product. Also, `products/mechanical-pencil.html` links to some related products
-- [X] Copyright symbol, your name, and the current year at the end of every page -- In `div#footer`
+- [X] Copyright symbol, your name, and the current year at the end of every page -- In `<footer>` tag.
 
 ### Some other fun things I did:
 * Use [CSS's `max-width` property](https://www.w3schools.com/css/css_max-width.asp) to make various HTML elements, like tables, adapt to narrower screens better.
