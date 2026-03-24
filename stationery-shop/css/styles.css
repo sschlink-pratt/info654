@@ -25,6 +25,13 @@ p {
     max-width: 610px;
 }
 
+blockquote {
+    border-left: 5px #ccc solid;
+    padding-left: 10px;
+    max-width: 565px; /* 610px - 40px index + 5px border + 10px padding */
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+}
+
 a {
     color: #495ec9;
     text-decoration: none;
@@ -71,7 +78,7 @@ https://www.w3schools.com/css/tryit.asp?filename=trycss_table_striped
     background-color: #f2f2f2;
 }
 
-#footer {
+footer/*, #footer */ {
     color: #555555;
     margin-top: 80px;
 }
