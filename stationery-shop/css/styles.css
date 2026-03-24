@@ -74,6 +74,10 @@ To make a "zebra-striped" table, I used this W3
 page as a guide: 
 https://www.w3schools.com/css/tryit.asp?filename=trycss_table_striped
 */
+th {
+    text-align: left;
+    font-weight: normal;
+}
 .product-details-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
