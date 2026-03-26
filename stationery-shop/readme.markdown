@@ -18,6 +18,7 @@
 * Use [CSS's `max-width` property](https://www.w3schools.com/css/css_max-width.asp) to make various HTML elements, like tables, adapt to narrower screens better.
 * Product images expand and tilt when hovered over, which I adapted from [this tutorial](https://www.30secondsofcode.org/css/s/image-hover-rotate/)
 * Add a favicon, which was created by: John Sorrentino / [favicon.io](https://favicon.io/emoji-favicons/). The graphic is licensed under CC-BY 4.0.
+* The striped table on `products/mechanical-pencil.html` floats right.
 
 ## Other sources consulted
 

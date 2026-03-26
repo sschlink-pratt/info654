@@ -6,11 +6,11 @@ https://jigsaw.w3.org/css-validator
 body {
     background-color: #fffff0;
     margin-left: 5%;
-    font-size: 115%;
+    font-size: 1.2em;
     font-family: Georgia, Utopia, Palatino, "Palatino Linotype", serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, blockquote {
     font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
 }
 h2 {
@@ -28,8 +28,7 @@ p {
 blockquote {
     border-left: 5px #ccc solid;
     padding-left: 10px;
-    max-width: 565px; /* 610px - 40px index + 5px border + 10px padding */
-    font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+    max-width: 565px; /* 610px - (40px index + 5px border + 10px padding) */
 }
 
 a {
@@ -46,11 +45,19 @@ ul {
 
 .product-image {
     width: 600px;
+    display:block;
     margin-top: 20px;
     margin-bottom: 25px;
     transition: all 0.3s; /* see below */
     max-width: 100%; /* adapt to narrow screens dynamically */
 }
+
+/* We use this div on products/mechanical-pencil.html since
+that page includes a table in its product description */
+#description-container {
+    max-width: 600px;
+}
+
 /*
 To make product images pop a bit more, we're going 
 to have them rotate 5 degrees on hover
@@ -60,8 +67,11 @@ https://www.30secondsofcode.org/css/s/image-hover-rotate/
 .product-image:hover {
     transform: scale(1.1) rotate(5deg);
 }
+
 .product-details-table {
-    width: 600px;
+    float: right;
+    width: 300px;
+    margin-left: 10px;
     /* when screen width is less than 600px, resize table to be 96% with of container */
     max-width: 96%; 
     border-style: solid;
@@ -70,7 +80,7 @@ https://www.30secondsofcode.org/css/s/image-hover-rotate/
     font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
 }
 /* 
-To make a "zebra-striped" table, I used this W3 
+To make this table a "zebra-striped" table, I used this W3 
 page as a guide: 
 https://www.w3schools.com/css/tryit.asp?filename=trycss_table_striped
 */
