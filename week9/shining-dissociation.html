@@ -18,7 +18,7 @@
                 font-size: 1.6em;
             }
             input[type="range"] {
-              width: 400px;
+                width: 290px;
             }
             #paper {
                 font-family: courier;
@@ -34,13 +34,13 @@
         <div id="paper"></div>
 
         <script>
+            // First, let's declare all our functions.
             function getRandomLowercaseLetter() {
               const alphabetSize = 26;
               const aCharCode = 97;
               // Generate a random number between 0 and 25, add to 'a' ASCII, and convert to a character
               return String.fromCharCode(Math.floor(Math.random() * alphabetSize) + aCharCode);
             }
-
            function typeLetter(correctLetter, dissociationLevel) {
                 let randNumberBelowThreeHundred = Math.floor(Math.random() * 300) + 1;
                 if (randNumberBelowThreeHundred < dissociationLevel) {
@@ -49,7 +49,6 @@
                     return correctLetter;
                 }
             }
-
             function writeTheSentence(dissociationLevel, paper) {
                 const correctSentence = "All work and no play makes Jack a dull boy";
                 let sentenceAsTyped = "";
