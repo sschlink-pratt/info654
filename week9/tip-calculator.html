@@ -1,0 +1,45 @@
+<!--
+Create a new HTML page to allow a person to enter (input) the cost of a meal, a desired tip percentage and a Calculate button to determine the tip amount.
+The <body> of your HTML page should include
+
+* Two <input> elements - one for cost and another for tip percentage. These input elements should have unique ids so they can be referenced later. Decimal point to 2 places should be specified as part of the <input> declaration. (something like <input id=”...” type=”number” step=”.01”>
+* A button labeled “calculate tip” that, onclick, calls your tip function.
+* An output format section  such as <p> or <h2> that has a unique id to be referenced later (e.g., <p id=”output_tip_amount”></p>
+* A <script> section. This should contain your tip calculation function.
+* Inside your function, you should declare three variables using “let”: one that references the value of input element Id cost, and the other, input element id tip percentage; and the third is the tip amount calculation.
+* Use getElementById() of the output format section id and set the .innerHTML to the calculated tip. Some formatting will be needed so the calculated numeric value appears with text around it (e.g.., “tip amount: $5.24”)
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sam Schlinkert">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tip Calculator</title>
+        <style>
+       
+        </style>
+    </head>
+    <body>
+        <label for="cost">Cost:</label>
+        $<input type="text" id="cost" name="cost" size="8"><br><br>
+        <label for="tip-percentage">Tip percentage:</label>
+        <input id="tip-percentage" name="tip-percentage" type=”number” step=".01" size="4">%<br><br>
+        <button type="button" onclick="calculateTip()" id="calculate">Calculate Tip</button>
+        <p id="tip_amount"></p>
+        <script>
+            function calculateTip() {
+                let cost = document.getElementById('cost').value;
+                let tipPercentage = document.getElementById('tip-percentage').value;
+                if (tipPercentage < 1.0) {
+                    tipPercentage = tipPercentage* 100;
+                }
+                console.log("cost is " + cost);                
+                console.log("tip percentage is " + tipPercentage);
+                let tipAmount = cost * (tipPercentage/100);
+                // From https://stackoverflow.com/a/52770789
+                document.getElementById('tip_amount').innerHTML = "Tip amount: " + tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+            }
+        </script>
+    </body>
+</html>
