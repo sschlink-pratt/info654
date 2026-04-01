@@ -16,9 +16,6 @@ The <body> of your HTML page should include
         <meta name="author" content="Sam Schlinkert">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tip Calculator</title>
-        <style>
-       
-        </style>
     </head>
     <body>
         <label for="cost">Cost:</label>
@@ -31,12 +28,14 @@ The <body> of your HTML page should include
             function calculateTip() {
                 let cost = document.getElementById('cost').value;
                 let tipPercentage = document.getElementById('tip-percentage').value;
+                // if user entered a number under 1, assume we want to make it a percentage
+                // by multiplying it by 100
                 if (tipPercentage < 1.0) {
-                    tipPercentage = tipPercentage* 100;
+                    tipPercentage = tipPercentage * 100;
                 }
-                console.log("cost is " + cost);                
-                console.log("tip percentage is " + tipPercentage);
-                let tipAmount = cost * (tipPercentage/100);
+                // Here's the actual tip amount calculation
+                let tipAmount = cost * (tipPercentage / 100);
+                // Here, we need to format the tip amount into US currency. 
                 // From https://stackoverflow.com/a/52770789
                 document.getElementById('tip_amount').innerHTML = "Tip amount: " + tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
             }
