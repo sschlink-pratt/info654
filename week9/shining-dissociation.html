@@ -13,6 +13,13 @@
             #dissociation-level-container {
                 margin-bottom: 30px;
             }
+            label {
+                font-family: Roboto, 'Helvetica Neue', Helvetica, Univers, Arial, sans-serif;
+                font-size: 1.6em;
+            }
+            input[type="range"] {
+              width: 400px;
+            }
             #paper {
                 font-family: courier;
             }
@@ -20,8 +27,9 @@
     </head>
     <body>
         <div id="dissociation-level-container">
-          <input type="range" id="dissociation-level" name="dissociation-level" min="0" max="50" value="0" />
-          <label for="dissociation-level">Amount of dissociation</label>
+            <label for="dissociation-level">Amount of ~dissociation~</label>
+            <br><br>
+            <input type="range" id="dissociation-level" name="dissociation-level" min="0" max="50" value="0" />
         </div>
         <div id="paper"></div>
 
