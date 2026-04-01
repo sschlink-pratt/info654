@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sam Schlinkert">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shining Typewriter Paper</title>
+        <style>
+            body {
+                background-color: #d9bda5;
+                margin-left: 30px;
+            }
+            #dissociation-level-container {
+                margin-bottom: 30px;
+            }
+            #paper {
+                font-family: courier;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="dissociation-level-container">
+          <input type="range" id="dissociation-level" name="dissociation-level" min="0" max="50" value="0" />
+          <label for="dissociation-level">Amount of dissociation</label>
+        </div>
+        <div id="paper"></div>
+
+        <script>
+            function getRandomLowercaseLetter() {
+              const alphabetSize = 26;
+              const aCharCode = 97;
+              // Generate a random number between 0 and 25, add to 'a' ASCII, and convert to a character
+              return String.fromCharCode(Math.floor(Math.random() * alphabetSize) + aCharCode);
+            }
+
+           function typeLetter(correctLetter, dissociationLevel) {
+                let randNumberBelowThreeHundred = Math.floor(Math.random() * 300) + 1;
+                if (randNumberBelowThreeHundred < dissociationLevel) {
+                    return getRandomLowercaseLetter();
+                } else {
+                    return correctLetter;
+                }
+            }
+
+            function writeTheSentence(dissociationLevel, paper) {
+                const correctSentence = "All work and no play makes Jack a dull boy";
+                let sentenceAsTyped = "";
+                for (let i = 0; i < correctSentence.length; i++) {
+                    let thisLetter = typeLetter(correctSentence[i], dissociationLevel);
+                    paper.append(thisLetter);
+                }
+                // appending a <br> is tricky?!
+                const brElement = document.createElement('br');
+                paper.appendChild(brElement);
+            }
+            function reWrite(dissociationLevel) {
+                let paper = document.getElementById('paper');
+                paper.innerHTML = "";
+                for (let count = 1; count < 50; ++count) {
+                    writeTheSentence(dissociationLevel, paper);
+                }
+            }
+            // initial write
+            var dissociationLevel = 0;
+            reWrite(dissociationLevel);
+
+            // Now listen for change in slider position
+            document.getElementById("dissociation-level").oninput = function() { 
+                dissociationLevel = this.value; // get new slider position
+                reWrite(dissociationLevel); // re-write all lines, given new dissociationLevel.
+            };
+        </script>
+    </body>
+</html>
