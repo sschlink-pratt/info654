@@ -39,7 +39,7 @@ The <body> of your HTML page should include
                 }
                 // Here's the actual tip amount calculation
                 let tipAmount = cost * (tipPercentage / 100);
-                let totalAmount = Number(cost) + Number(tipAmount);
+                let totalAmount = cost + tipAmount;
 
                 // Here, we need to format the tip amount into US currency. 
                 // From https://stackoverflow.com/a/52770789
