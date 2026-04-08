@@ -24,9 +24,11 @@ The <body> of your HTML page should include
     </head>
     <body>
         <label for="cost">Cost:</label>
-        $<input type="number" id="cost" name="cost" size="8"><br><br>
+        $<input type="number" id="cost" name="cost">
+        <br><br>
         <label for="tip-percentage">Tip percentage:</label>
-        <input type="number" id="tip-percentage" name="tip-percentage" step=".01" size="4">%<br><br>
+        <input type="number" id="tip-percentage" name="tip-percentage" step=".01">%
+        <br><br>
         <button type="button" onclick="calculateTip()" id="calculate">Calculate Tip</button>
         <p id="tip-amount"></p>
         <p id="total-amount"></p>
@@ -38,10 +40,10 @@ The <body> of your HTML page should include
                 let open = Number(jsonData["data"][0]["open"]);
                 let close = Number(jsonData["data"][0]["close"]);
 
-                if (open <= close) {
-                    return false;
-                } else {
+                if (close > open) {
                     return true;
+                } else {
+                    return false;
                 }
             }
             async function calculateTip() {
@@ -50,29 +52,40 @@ The <body> of your HTML page should include
                 let cost = Number(document.getElementById('cost').value);
                 let tipPercentage = Number(document.getElementById('tip-percentage').value);
 
-                var isDowUpOrNot = await isDowUp();
-
-                if (isDowUpOrNot == true && tipPercentage < 20) {
-                    tipPercentage = 20;
-                }
-              
-                // if user entered a number under 1, assume we want to make it a percentage
+                // declare and set a boolean variable to whether the Dow Jones is up or not.
+                let isDowUpOrNot = await isDowUp();
+                console.log(isDowUpOrNot);
+                // If user entered a number under 1, assume we want to make it a percentage
                 // by multiplying it by 100
                 if (tipPercentage < 1.0) {
                     tipPercentage = tipPercentage * 100;
                 }
-                // Here's the actual tip amount calculation
+
+                // if Dow is up and tip is less than 20% go ahead and 
+                // bump it up to 20%!
+                let cheapskate = isDowUpOrNot == true && tipPercentage < 20;
+                if (cheapskate) {
+                    tipPercentage = 20;
+                }
+          
+                // Now we're ready to do the actual tip amount calculation
                 let tipAmount = cost * (tipPercentage / 100);
                 let totalAmount = cost + tipAmount;
 
-                // Here, we need to format the tip amount into US currency. 
+
+                // Lastly, we need to format the tip amount into US currency when we display
+                // it to the user. 
                 // From https://stackoverflow.com/a/52770789
-                document.getElementById('tip-amount').innerHTML = "Tip amount: " + 
-                    tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+                if (cheapskate) {
+                    document.getElementById('tip-amount').innerHTML = "Tip amount: " + 
+                        tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' }) +", cheapskate!";
+                } else { 
+                    document.getElementById('tip-amount').innerHTML = "Tip amount: " + 
+                        tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+                }
                 document.getElementById('total-amount').innerHTML = "Total amount: " + 
                     totalAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
             }
-  
         </script>
     </body>
 </html>
