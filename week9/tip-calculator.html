@@ -19,15 +19,19 @@ The <body> of your HTML page should include
     </head>
     <body>
         <label for="cost">Cost:</label>
-        $<input type="text" id="cost" name="cost" size="8"><br><br>
+        $<input type="text" id="cost" name="cost" size="8" type="number"><br><br>
         <label for="tip-percentage">Tip percentage:</label>
-        <input id="tip-percentage" name="tip-percentage" type=”number” step=".01" size="4">%<br><br>
+        <input id="tip-percentage" name="tip-percentage" type=”number” step=".01" size="4" type="number">%<br><br>
         <button type="button" onclick="calculateTip()" id="calculate">Calculate Tip</button>
-        <p id="tip_amount"></p>
+        <p id="tip-amount"></p>
+        <p id="total-amount"></p>
         <script>
             function calculateTip() {
-                let cost = document.getElementById('cost').value;
-                let tipPercentage = document.getElementById('tip-percentage').value;
+                // Convert these variables to Numbers right away, since we're going to be doing math
+                // on them shortly.
+                let cost = Number(document.getElementById('cost').value);
+                let tipPercentage = Number(document.getElementById('tip-percentage').value);
+
                 // if user entered a number under 1, assume we want to make it a percentage
                 // by multiplying it by 100
                 if (tipPercentage < 1.0) {
@@ -35,9 +39,15 @@ The <body> of your HTML page should include
                 }
                 // Here's the actual tip amount calculation
                 let tipAmount = cost * (tipPercentage / 100);
+                let totalAmount = Number(cost) + Number(tipAmount);
+
                 // Here, we need to format the tip amount into US currency. 
                 // From https://stackoverflow.com/a/52770789
-                document.getElementById('tip_amount').innerHTML = "Tip amount: " + tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+                document.getElementById('tip-amount').innerHTML = "Tip amount: " + 
+                    tipAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+                document.getElementById('total-amount').innerHTML = "Total amount: " + 
+                    totalAmount.toLocaleString('us-US', { style: 'currency', currency: 'USD' });
+
             }
         </script>
     </body>
