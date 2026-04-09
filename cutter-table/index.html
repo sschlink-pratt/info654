@@ -1,0 +1,179 @@
+<!--
+I based this Cutter Table on what  Ifound in this Wikipedia article:
+https://en.wikipedia.org/wiki/Cutter_Expansive_Classification#Cutter_numbers
+
+Which looks identical(?) to the procedure detailed on this LC webpage:
+https://www.loc.gov/aba/pcc/053/table.html
+
+However, I'll note that the "Dewey Cutter Program", hosted by OCLC, seems to describe TWO 
+"versions" of the Cutter table?: Cutter Four-Figure Table vs. the Cutter-Sanborn Four-Figure Table. 
+Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/Dewey_Cutter_Program_instructions#Select_a_table
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sam Schlinkert">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cutter Calculator</title>
+        <style>
+          #cutter-number, #desired-length {
+            font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+          }
+        </style>
+    </head>
+    <body>
+        <label for="author">Author name (family name first):</label>
+        <input type="text" id="author" name="author" onkeyup="getCutter()" size="30">
+        <br><br>
+        <!-- <button type="button" onclick="getCutter()" id="get-cutter">Get Cutter</button> -->
+        <label for="total-cutter-length">Total Cutter code length:</label>
+        <input type="range" id="total-cutter-length" name="total-cutter-length" min="1" max="15" value="5">
+        <span id="desired-length">5</span>
+
+        <p id="cutter-number"></p>
+        <script>
+            // Constants for better maintainability
+            const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
+
+            // Pre-computed letter values for frequently used letters
+            const LETTER_VALUES = {};
+            for (let i = 0; i < ALPHABET.length; i++) {
+                LETTER_VALUES[ALPHABET[i]] = i + 1;
+            }
+
+            // Convert letter to number: A => 1, B => 2, etc.
+            function asNum(letter) {
+                return LETTER_VALUES[letter] || 0;
+            }
+
+            // Lookup tables for second character processing (replaces repetitive if-else chains)
+            const SECOND_CHAR_MAPPINGS = {
+                S: {
+                    'A': '2', 'E': '4', 'C': null, // Special case for CH
+                    'H_I': '5', 'M_P': '6', 'T': '7', 'U': '8', 'W_Z': '9'
+                },
+                default: {
+                    vowel: { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' },
+                    consonant: { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' },
+                    firstIsVowel: { 'B': '2', 'D': '3', 'L_M': '4', 'N': '5', 'P': '6', 'S_T': '8', 'U_Y': '9' }
+                }
+            };
+
+            // Map additional characters to numbers (A-D=3, E-H=4, etc.)
+            const ADDITIONAL_CHAR_MAP = [
+                { range: ['A', 'D'], value: '3' },
+                { range: ['E', 'H'], value: '4' },
+                { range: ['I', 'L'], value: '5' },
+                { range: ['M', 'O'], value: '6' },
+                { range: ['P', 'S'], value: '7' },
+                { range: ['T', 'V'], value: '8' },
+                { range: ['W', 'Z'], value: '9' }
+            ];
+
+            function getSecondCharCutter(firstCharNum, secondCharNum, author) {
+                const firstChar = String.fromCharCode(firstCharNum + 64);
+                
+                // Special case: S followed by C with CH
+                if (firstCharNum === LETTER_VALUES['C']) {
+                    if (author[2] === 'H') return '3';
+                }
+                
+                // Handle the more regular S cases
+                if (firstCharNum === LETTER_VALUES['S']) {
+                    if (secondCharNum === LETTER_VALUES['A']) return '2';
+                    if (secondCharNum === LETTER_VALUES['E']) return '4';
+                    if (secondCharNum === LETTER_VALUES['C']) return ''; // Handled above
+                    if (inRange(secondCharNum, LETTER_VALUES['H'], LETTER_VALUES['I'])) return '5';
+                    if (inRange(secondCharNum, LETTER_VALUES['M'], LETTER_VALUES['P'])) return '6';
+                    if (secondCharNum === LETTER_VALUES['T']) return '7';
+                    if (secondCharNum === LETTER_VALUES['U']) return '8';
+                    if (inRange(secondCharNum, LETTER_VALUES['W'], LETTER_VALUES['Z'])) return '9';
+                }
+                
+                // Handle case where first "letter" is Q+U or a non-vowel
+                const isQU = (firstCharNum === LETTER_VALUES['Q'] && secondCharNum === LETTER_VALUES['U']);
+                const isNonVowel = !VOWELS.has(firstChar);
+                
+                if (isQU || isNonVowel) {
+                    const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
+                    const secondChar = String.fromCharCode(secondCharNum + 64);
+                    return map[secondChar] || '';
+                }
+                
+                // Handle case where first letter is a vowel
+                if (VOWELS.has(firstChar)) {
+                    if (secondCharNum === LETTER_VALUES['B']) return '2';
+                    if (secondCharNum === LETTER_VALUES['D']) return '3';
+                    if (inRange(secondCharNum, LETTER_VALUES['L'], LETTER_VALUES['M'])) return '4';
+                    if (secondCharNum === LETTER_VALUES['N']) return '5';
+                    if (secondCharNum === LETTER_VALUES['P']) return '6';
+                    if (secondCharNum === LETTER_VALUES['R']) return '7';
+                    if (inRange(secondCharNum, LETTER_VALUES['S'], LETTER_VALUES['T'])) return '8';
+                    if (inRange(secondCharNum, LETTER_VALUES['U'], LETTER_VALUES['Y'])) return '9';
+                }
+                
+                return '';
+            }
+
+            function inRange(value, min, max) {
+                return value >= min && value <= max;
+            }
+
+            function getAdditionalCharCutter(charNum) {
+                for (const { range, value } of ADDITIONAL_CHAR_MAP) {
+                    if (inRange(charNum, LETTER_VALUES[range[0]], LETTER_VALUES[range[1]])) {
+                        return value;
+                    }
+                }
+                return '';
+            }
+
+            // Main function
+            function getCutter() {
+                const cutterNumberEl = document.getElementById('cutter-number');
+                const authorInput = document.getElementById('author');
+                const lengthInput = document.getElementById('total-cutter-length');
+                
+                // Early return if no author
+                cutterNumberEl.innerHTML = '';
+                const author = authorInput.value.toUpperCase();
+                if (!author) return;
+                
+                const numberOfCharactersToDisplay = Math.min(
+                    parseInt(lengthInput.value, 10),
+                    author.length
+                );
+                
+                if (numberOfCharactersToDisplay <= 0) return;
+                
+                const authorAsNumbers = author.split('').map(char => asNum(char));
+                // Cutter code starts as first letter of the author's name
+                let cutter = author[0];
+                
+                // If user only wants a Cutter code length of 1, we're done!
+                if (numberOfCharactersToDisplay === 1) {
+                    cutterNumberEl.innerHTML = cutter;
+                    return;
+                }
+                
+                // Process second character
+                cutter += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
+                
+                // Process additional characters
+                for (let i = 2; i < authorAsNumbers.length; i++) {
+                    cutter += getAdditionalCharCutter(authorAsNumbers[i]);
+                }
+                
+                cutterNumberEl.innerHTML = cutter.substring(0, numberOfCharactersToDisplay);
+            }
+
+            // Event listener setup
+            document.getElementById('total-cutter-length').addEventListener('input', function() {
+                document.getElementById('desired-length').innerHTML = this.value;
+                getCutter();
+            });
+        </script>
+    </body>
+</html>
