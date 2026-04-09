@@ -61,7 +61,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
         </p>
         <h3>Lingering Questions</h3>
         <p class="about">
-            I am admittedly still unsure if I handled edge cases like "Scanlon" correctly. In this case, the second letter "c" is NOT followed by an "h". In this case, I assume you then move to the "additional characters" table and choose 3 for "c", but I'm not 100% sure. But, while my code gives "S365", <a href="https://www.itsmarc.com/crs/mergedProjects/SCMshelf/scmshelf/g_63_cutter_numbers_shelf.htm">this "G63" page</a> (<a href="https://www.loc.gov/aba/publications/FreeCSM/G063.pdf">a PDF of which is on loc.gov</a>) says it should be "S29".
+            I am admittedly still unsure if I handled edge cases like "Scanlon" correctly. In this case, the second letter "c" is NOT followed by an "h". In this case, I assume you then move to the "additional characters" table and choose 3 for "c", but I'm not 100% sure. But, while my code gives "S3365", <a href="https://www.itsmarc.com/crs/mergedProjects/SCMshelf/scmshelf/g_63_cutter_numbers_shelf.htm">this "G63" page</a> (<a href="https://www.loc.gov/aba/publications/FreeCSM/G063.pdf">a PDF of which is on loc.gov</a>) says it should be "S29".
         </p>
         <p class="about">
             Also, I think the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" is the current "standard"? The codes produced by this tool do not match those used by Pratt libraries, so something is off.
@@ -114,7 +114,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                     if (inRange(secondCharNum, LETTER_VALUES['W'], LETTER_VALUES['Z'])) return '9';
                 }
                 
-                // Handle case where first "letter" is Q+U or a non-vowel
+                // Handle case where first "letter" is Q+U
                 const isQU = ((firstCharNum === LETTER_VALUES['Q']) && (secondCharNum === LETTER_VALUES['U']));
                 if (isQU) {
                     const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
@@ -124,7 +124,6 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 }
 
                 const isNonVowel = !VOWELS.has(firstChar);
-                
                 if (isNonVowel) {
                     const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
                     const secondChar = String.fromCharCode(secondCharNum + 64);
@@ -143,6 +142,8 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                     if (inRange(secondCharNum, LETTER_VALUES['U'], LETTER_VALUES['Y'])) return '9';
                 }
                 
+                // No explicit second character!! 
+                // Handle this issue later!
                 return '';
             }
 
@@ -200,16 +201,25 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 }
                 
                 // Process second character
-                cutterCode += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
-
-                var nextCharacterToProcess = 2;
-                // This isn't pretty, but basically if we had a corner case of a QU or SCH, where the first
-                // "additional" character to process is NOT the third letter of the string
-                if ((authorAsNumbers[0] === LETTER_VALUES['Q']) && (authorAsNumbers[1] === LETTER_VALUES['U'])) {
-                    nextCharacterToProcess = 3;
-                } 
-                if ((authorAsNumbers[0] === LETTER_VALUES['S']) && (authorAsNumbers[1] === LETTER_VALUES['C']) && (authorAsNumbers[2] === LETTER_VALUES['H'])) {
-                    nextCharacterToProcess = 3;
+                let secondCharacter = getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
+                // if we get a secondCharacter
+                if (secondCharacter != '') {
+                    // ... add it to our growing cutterCode
+                    cutterCode += secondCharacter;
+                    // Now figure out which character we're going to process next.
+                    // This isn't pretty, but basically if we had a corner case of a QU or SCH, where the first
+                    // "additional" character to process is NOT the third letter of the string, but the 4th!
+                    if ((authorAsNumbers[0] === LETTER_VALUES['Q']) && (authorAsNumbers[1] === LETTER_VALUES['U'])) {
+                        nextCharacterToProcess = 3;
+                    } else if ((authorAsNumbers[0] === LETTER_VALUES['S']) && (authorAsNumbers[1] === LETTER_VALUES['C']) && (authorAsNumbers[2] === LETTER_VALUES['H'])) {
+                        nextCharacterToProcess = 3;
+                    } else {
+                        var nextCharacterToProcess = 2;
+                    }
+                } else {
+                    // If we did NOT get a secondCharacter, we now have to process the 2nd character
+                    // using the additional letters table.
+                    var nextCharacterToProcess = 1;
                 }
 
                 // Process additional characters (regardless of whether user asked for them -- we'll
