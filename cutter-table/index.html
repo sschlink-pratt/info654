@@ -113,11 +113,9 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 // Handle case where first "letter" is Q+U or a non-vowel
                 const isQU = ((firstCharNum === LETTER_VALUES['Q']) && (secondCharNum === LETTER_VALUES['U']));
                 if (isQU) {
-                    console.log("found a QU");
                     const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
                     // If the firstChar is "QU", the secondChar is actually the THIRD character in the string
                     const secondChar = author[2];
-                    console.log("Returning second char as " + map[secondChar]);
                     return map[secondChar] || '';
                 }
 
@@ -126,7 +124,6 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 if (isNonVowel) {
                     const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
                     const secondChar = String.fromCharCode(secondCharNum + 64);
-                    console.log("Returning second char as " + map[secondChar]);
                     return map[secondChar] || '';
                 }
                 
