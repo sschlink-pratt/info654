@@ -146,15 +146,8 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 // If author is now empty, return nothing now.
                 if (!author) return;
                 
-                // We can't display more characters than are in the author's name. 
-                // If user asks for more characters than are in the author's name, 
-                // set numberOfCharactersToDisplay to the length of the author's name
-                // to avoid trouble down the road.
-                const numberOfCharactersToDisplay = Math.min(
-                    parseInt(lengthInput.value, 10),
-                    author.length
-                );
-                
+                let numberOfCharactersToDisplay = parseInt(lengthInput.value, 10);
+
                 if (numberOfCharactersToDisplay <= 0) return;
                 
                 const authorAsNumbers = author.split('').map(char => asNum(char));
@@ -170,11 +163,24 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 // Process second character
                 cutterCode += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
                 
-                // Process additional characters (regardless of whether user asked for them)
+                // Process additional characters (regardless of whether user asked for them -- we'll
+                // take the efficiency hit!)
                 for (let i = 2; i < authorAsNumbers.length; i++) {
                     cutterCode += getAdditionalCharCutter(authorAsNumbers[i]);
                 }
                 
+                // If user requests more characters than we have...
+                if (cutterCode.length < numberOfCharactersToDisplay) {
+                    // reset numberOfCharactersToDisplay to the length of our code.
+                    numberOfCharactersToDisplay = cutterCode.length;
+                    // Since we're effectively ignoring/overwriting the user's desired length
+                    // as entered, we'll grey it out to signal that
+                    document.getElementById("desired-length").style.color = "#CCC";
+                } else {
+                    // If we are able to display their desired amount of characters,
+                    // make the text black again.
+                    document.getElementById("desired-length").style.color = "#000";
+                }
                 // Finally, write the desired number of characters of the cutterCode
                 // to the HTML element.
                 cutterNumberEl.innerHTML = cutterCode.substring(0, numberOfCharactersToDisplay);
