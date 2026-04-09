@@ -1,12 +1,14 @@
 <!--
-I based this Cutter Table on what  Ifound in this Wikipedia article:
+I based this Cutter Table on what I found in this Wikipedia article:
 https://en.wikipedia.org/wiki/Cutter_Expansive_Classification#Cutter_numbers
 
 Which looks identical(?) to the procedure detailed on this LC webpage:
 https://www.loc.gov/aba/pcc/053/table.html
 
 However, I'll note that the "Dewey Cutter Program", hosted by OCLC, seems to describe TWO 
-"versions" of the Cutter table?: Cutter Four-Figure Table vs. the Cutter-Sanborn Four-Figure Table. 
+"versions" of the Cutter table?: 
+Cutter Four-Figure Table and the Cutter-Sanborn Four-Figure Table
+I don't know the difference.
 Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/Dewey_Cutter_Program_instructions#Select_a_table
 -->
 <!DOCTYPE html>
@@ -138,9 +140,16 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 
                 // Early return if no author
                 cutterNumberEl.innerHTML = '';
-                const author = authorInput.value.toUpperCase();
+
+                // Make author name uppercase, than remove any and all punctuation and spaces.
+                const author = authorInput.value.toUpperCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s+/g, '');
+                // If author is now empty, return nothing now.
                 if (!author) return;
                 
+                // We can't display more characters than are in the author's name. 
+                // If user asks for more characters than are in the author's name, 
+                // set numberOfCharactersToDisplay to the length of the author's name
+                // to avoid trouble down the road.
                 const numberOfCharactersToDisplay = Math.min(
                     parseInt(lengthInput.value, 10),
                     author.length
@@ -150,28 +159,32 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 
                 const authorAsNumbers = author.split('').map(char => asNum(char));
                 // Cutter code starts as first letter of the author's name
-                let cutter = author[0];
+                let cutterCode = author[0];
                 
                 // If user only wants a Cutter code length of 1, we're done!
                 if (numberOfCharactersToDisplay === 1) {
-                    cutterNumberEl.innerHTML = cutter;
+                    cutterNumberEl.innerHTML = cutterCode;
                     return;
                 }
                 
                 // Process second character
-                cutter += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
+                cutterCode += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
                 
-                // Process additional characters
+                // Process additional characters (regardless of whether user asked for them)
                 for (let i = 2; i < authorAsNumbers.length; i++) {
-                    cutter += getAdditionalCharCutter(authorAsNumbers[i]);
+                    cutterCode += getAdditionalCharCutter(authorAsNumbers[i]);
                 }
                 
-                cutterNumberEl.innerHTML = cutter.substring(0, numberOfCharactersToDisplay);
+                // Finally, write the desired number of characters of the cutterCode
+                // to the HTML element.
+                cutterNumberEl.innerHTML = cutterCode.substring(0, numberOfCharactersToDisplay);
             }
 
-            // Event listener setup
+            // When user moves the slider...
             document.getElementById('total-cutter-length').addEventListener('input', function() {
+                // update the displayed value
                 document.getElementById('desired-length').innerHTML = this.value;
+                // and re-make the cutterCode (even though that's not technically efficient)
                 getCutter();
             });
         </script>
