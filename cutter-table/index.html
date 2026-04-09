@@ -5,6 +5,8 @@ https://en.wikipedia.org/wiki/Cutter_Expansive_Classification#Cutter_numbers
 Which looks identical(?) to the procedure detailed on this LC webpage:
 https://www.loc.gov/aba/pcc/053/table.html
 
+Or https://www.itsmarc.com/crs/mergedProjects/SCMshelf/scmshelf/g_63_cutter_numbers_shelf.htm
+
 However, I'll note that the "Dewey Cutter Program", hosted by OCLC, seems to describe TWO 
 "versions" of the Cutter table?: 
 Cutter Four-Figure Table and the Cutter-Sanborn Four-Figure Table
@@ -56,9 +58,17 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
         <p class="about">
             This code is based on the Cutter procedure described on <a href="https://www.loc.gov/aba/pcc/053/table.html">this Library of Congress webpage</a>.
         </p>
+        <h3>Lingering Questions</h3>
         <p class="about">
-            However, I think the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" is the current "standard"? I can't find it online, but Pratt <a href="https://cat.pratt.edu/record=b1192303">seems to have a copy at the Brooklyn campus</a>.
+            I am admittedly still unsure if I handled edge cases like "Scanlon" correctly. In this case, the second letter "c" is NOT followed by an "h". In this case, I assume you then move to the "additional characters" table and choose 3 for "c", but I'm not 100% sure. But, while my code gives "S365", <a href="https://www.itsmarc.com/crs/mergedProjects/SCMshelf/scmshelf/g_63_cutter_numbers_shelf.htm">this "G63" page</a> (<a href="https://www.loc.gov/aba/publications/FreeCSM/G063.pdf">a PDF of which is on loc.gov</a>) says it should be "S29".
         </p>
+        <p class="about">
+            Also, I think the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" is the current "standard"? The codes produced by this tool do not match those used by Pratt libraries, so something is off.
+        </p>
+        <p class="about">
+            I can't seem to find the Swanson-Swift 1969 revision online, but Pratt <a href="https://cat.pratt.edu/record=b1192303">seems to have a copy at the Brooklyn campus library</a>.
+        </p>
+
         <script>
             const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
@@ -78,10 +88,14 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
             
             function getSecondCharCutter(firstCharNum, secondCharNum, author) {
                 const firstChar = String.fromCharCode(firstCharNum + 64);
-                
-                // Special case: S followed by C with CH
-                if (firstCharNum === LETTER_VALUES['C']) {
+
+                // Special case: S followed by CH
+                if ((firstCharNum === LETTER_VALUES['S']) && (secondCharNum == LETTER_VALUES['C'])) {
                     if (author[2] === 'H') return '3';
+                }
+                // Special case: "Qu" effectively has no second Cutter character
+                if ((author.length == 2) && (firstCharNum === LETTER_VALUES['Q']) && (secondCharNum == LETTER_VALUES['U'])) {
+                    return '';
                 }
                 
                 // Handle the more regular S cases
@@ -97,12 +111,22 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 }
                 
                 // Handle case where first "letter" is Q+U or a non-vowel
-                const isQU = (firstCharNum === LETTER_VALUES['Q'] && secondCharNum === LETTER_VALUES['U']);
+                const isQU = ((firstCharNum === LETTER_VALUES['Q']) && (secondCharNum === LETTER_VALUES['U']));
+                if (isQU) {
+                    console.log("found a QU");
+                    const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
+                    // If the firstChar is "QU", the secondChar is actually the THIRD character in the string
+                    const secondChar = author[2];
+                    console.log("Returning second char as " + map[secondChar]);
+                    return map[secondChar] || '';
+                }
+
                 const isNonVowel = !VOWELS.has(firstChar);
                 
-                if (isQU || isNonVowel) {
+                if (isNonVowel) {
                     const map = { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' };
                     const secondChar = String.fromCharCode(secondCharNum + 64);
+                    console.log("Returning second char as " + map[secondChar]);
                     return map[secondChar] || '';
                 }
                 
@@ -167,18 +191,29 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 // Cutter code starts as first letter of the author's name
                 let cutterCode = author[0];
                 
-                // If user only wants a Cutter code length of 1, we're done!
-                if (numberOfCharactersToDisplay === 1) {
+                // If user only wants a Cutter code length of 1, or the author's name is only one character
+                // we're done!
+                if ((numberOfCharactersToDisplay === 1) || (author.length === 1)) {
                     cutterNumberEl.innerHTML = cutterCode;
                     return;
                 }
                 
                 // Process second character
                 cutterCode += getSecondCharCutter(authorAsNumbers[0], authorAsNumbers[1], author);
-                
+
+                var nextCharacterToProcess = 2;
+                // This isn't pretty, but basically if we had a corner case of a QU or SCH, where the first
+                // "additional" character to process is NOT the third letter of the string
+                if ((authorAsNumbers[0] === LETTER_VALUES['Q']) && (authorAsNumbers[1] === LETTER_VALUES['U'])) {
+                    nextCharacterToProcess = 3;
+                } 
+                if ((authorAsNumbers[0] === LETTER_VALUES['S']) && (authorAsNumbers[1] === LETTER_VALUES['C']) && (authorAsNumbers[2] === LETTER_VALUES['H'])) {
+                    nextCharacterToProcess = 3;
+                }
+
                 // Process additional characters (regardless of whether user asked for them -- we'll
                 // take the efficiency hit!)
-                for (let i = 2; i < authorAsNumbers.length; i++) {
+                for (let i = nextCharacterToProcess; i < authorAsNumbers.length; i++) {
                     cutterCode += getAdditionalCharCutter(authorAsNumbers[i]);
                 }
                 
