@@ -8,8 +8,11 @@ https://www.loc.gov/aba/pcc/053/table.html
 However, I'll note that the "Dewey Cutter Program", hosted by OCLC, seems to describe TWO 
 "versions" of the Cutter table?: 
 Cutter Four-Figure Table and the Cutter-Sanborn Four-Figure Table
-I don't know the difference.
 Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/Dewey_Cutter_Program_instructions#Select_a_table
+
+I don't know the difference.
+
+ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-Sanborn Three-Figure Author Tables.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -17,63 +20,62 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
         <meta charset="UTF-8">
         <meta name="author" content="Sam Schlinkert">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cutter Calculator</title>
+        <title>Cutter Code Maker</title>
         <style>
-          #cutter-number, #desired-length {
-            font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-          }
+            body {
+                background-color: #fffff0;
+                margin-left: 5%;
+                font-size: 1.2em;
+                font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+                font-weight: normal;
+            }
+            #cutter-number, #desired-length {
+                font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+            }
+            .about {
+                max-width: 610px;
+                line-height: 1.4;
+            }
         </style>
     </head>
     <body>
+        <h1>Cutter Code Maker</h1>
         <label for="author">Author name (family name first):</label>
         <input type="text" id="author" name="author" onkeyup="getCutter()" size="30">
         <br><br>
         <!-- <button type="button" onclick="getCutter()" id="get-cutter">Get Cutter</button> -->
         <label for="total-cutter-length">Total Cutter code length:</label>
-        <input type="range" id="total-cutter-length" name="total-cutter-length" min="1" max="15" value="5">
-        <span id="desired-length">5</span>
+        <input type="range" id="total-cutter-length" name="total-cutter-length" min="1" max="15" value="4">
+        <span id="desired-length">4</span>
 
-        <p id="cutter-number"></p>
+        <p>Cutter Code:<br><br>
+            <span id="cutter-number"><br></span>
+        </p>
+
+        <h2>About</h2>
+        <p class="about">
+            This code is based on the Cutter procedure described on <a href="https://www.loc.gov/aba/pcc/053/table.html">this Library of Congress webpage</a>.
+        </p>
+        <p class="about">
+            However, I think the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" is the current "standard"? I can't find it online, but Pratt <a href="https://cat.pratt.edu/record=b1192303">seems to have a copy at the Brooklyn campus</a>.
+        </p>
         <script>
-            // Constants for better maintainability
             const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
 
-            // Pre-computed letter values for frequently used letters
+            // Assign numbers to each letter in the alphabet, which will help
+            // when dealing with RANGES of letters later.
+            // A => 1, B => 2, etc.
             const LETTER_VALUES = {};
             for (let i = 0; i < ALPHABET.length; i++) {
                 LETTER_VALUES[ALPHABET[i]] = i + 1;
             }
 
-            // Convert letter to number: A => 1, B => 2, etc.
+            // A little helper function that, given a letter, given its assigned number
             function asNum(letter) {
                 return LETTER_VALUES[letter] || 0;
             }
-
-            // Lookup tables for second character processing (replaces repetitive if-else chains)
-            const SECOND_CHAR_MAPPINGS = {
-                S: {
-                    'A': '2', 'E': '4', 'C': null, // Special case for CH
-                    'H_I': '5', 'M_P': '6', 'T': '7', 'U': '8', 'W_Z': '9'
-                },
-                default: {
-                    vowel: { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' },
-                    consonant: { 'A': '3', 'E': '4', 'I': '5', 'O': '6', 'R': '7', 'U': '8', 'Y': '9' },
-                    firstIsVowel: { 'B': '2', 'D': '3', 'L_M': '4', 'N': '5', 'P': '6', 'S_T': '8', 'U_Y': '9' }
-                }
-            };
-
-            // Map additional characters to numbers (A-D=3, E-H=4, etc.)
-            const ADDITIONAL_CHAR_MAP = [
-                { range: ['A', 'D'], value: '3' },
-                { range: ['E', 'H'], value: '4' },
-                { range: ['I', 'L'], value: '5' },
-                { range: ['M', 'O'], value: '6' },
-                { range: ['P', 'S'], value: '7' },
-                { range: ['T', 'V'], value: '8' },
-                { range: ['W', 'Z'], value: '9' }
-            ];
-
+            
             function getSecondCharCutter(firstCharNum, secondCharNum, author) {
                 const firstChar = String.fromCharCode(firstCharNum + 64);
                 
@@ -123,6 +125,17 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 return value >= min && value <= max;
             }
 
+            // Map additional characters to numbers (A-D=3, E-H=4, etc.)
+            const ADDITIONAL_CHAR_MAP = [
+                { range: ['A', 'D'], value: '3' },
+                { range: ['E', 'H'], value: '4' },
+                { range: ['I', 'L'], value: '5' },
+                { range: ['M', 'O'], value: '6' },
+                { range: ['P', 'S'], value: '7' },
+                { range: ['T', 'V'], value: '8' },
+                { range: ['W', 'Z'], value: '9' }
+            ];
+
             function getAdditionalCharCutter(charNum) {
                 for (const { range, value } of ADDITIONAL_CHAR_MAP) {
                     if (inRange(charNum, LETTER_VALUES[range[0]], LETTER_VALUES[range[1]])) {
@@ -139,7 +152,7 @@ Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/De
                 const lengthInput = document.getElementById('total-cutter-length');
                 
                 // Early return if no author
-                cutterNumberEl.innerHTML = '';
+                cutterNumberEl.innerHTML = '<br>';
 
                 // Make author name uppercase, than remove any and all punctuation and spaces.
                 const author = authorInput.value.toUpperCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s+/g, '');
