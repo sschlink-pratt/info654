@@ -56,7 +56,11 @@ function getCubeCode() {
     for (let i = 0; i < remainingName.length/2 + 2; i+=2) {
         // If we're at the last letter and it can't be a pair...
         if (remainingName[i+1] == undefined && remainingName[i] != undefined) { 
-            // use the last letter map
+            // Add a 0 first, to maintain alphabetical order with names
+            // that have an 10 to 99 pair here
+            cubeCode += "0";
+            // Then, if user wants an additional number based on this
+            // last, not-paired letter, use the last letter map
             cubeCode += last_letter_map[asNum(remainingName[i]) - 1];
             // tbh I'm not sure if this always maintains alphabetical
             // order, though...
