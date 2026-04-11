@@ -43,7 +43,7 @@ function getBanerjeeCutter() {
 
     for (itable = 0; itable < 36; itable++) {
         if (valuelocator.substr(itable, 1) == userinput.substr(0, 1)) {
-            whichtable = tablefinder.substr(itable, 1);
+            var whichtable = tablefinder.substr(itable, 1);
         }
     }
 
