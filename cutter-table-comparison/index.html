@@ -41,7 +41,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
             }
             .about {
-                max-width: 610px;
+                max-width: 700px;
                 line-height: 1.4;
             }
         </style>
@@ -56,7 +56,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
         <input type="text" id="author" name="author" onkeyup="getCutter(); getBanerjeeCutter(); getCubeCode();" size="30">
         <br><br>
         <!-- <button type="button" onclick="getCutter()" id="get-cutter">Get Cutter</button> -->
-        <label for="total-cutter-length">Total Cutter code length:</label>
+        <label for="total-cutter-length">Total Cutter code length (max):</label>
         <input type="range" id="total-cutter-length" name="total-cutter-length" min="1" max="15" value="4">
         <span id="desired-length">4</span>
 
@@ -83,7 +83,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
             The Banerjee Code is from <a href="https://catalogingcalculator.com/">the Cataloging Calculator</a> by Kyle Banerjee. I lightly adapted <a href="https://github.com/banerjek/cataloging-calculator/blob/master/cutter.js#L71">the code</a>.
         </p>
         <p class="about">
-            The Cube Code is my best attempt at an improved version. I analyzed letter frequencies in 2 million author names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. After the first letter of the author name, the next two digits range from 10 to 99 to best describe the second and third letters of the author's name, based on the first three letters of the author's name. A single number, like 22, is reused for ranges of combinations of second and third letters that rarely occur after a given first letter.
+            The Cube Code is my best attempt at an improved version. I analyzed letter frequencies in 2 million author names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. After the first letter of the author name, the next two digits range from 10 to 99 to best describe the second and third letters of the author's name, based on the first three letters of the author's name. A single number, like 22, is reused for ranges of combinations of second and third letters that rarely occur after a given first letter. Additional letters are process in pairs.
         </p>
 
         <h3>Lingering Questions</h3>
