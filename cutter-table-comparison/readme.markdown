@@ -10,7 +10,7 @@ The **Cube Code** is my best attempt at an improved version. I analyzed letter f
 
 After the first letter of the author name, the next two digits range from 10 to 99 to best describe the second and third letters of the author's name, based on the first three letters of the author's name. A single number, like 22, is reused for ranges of combinations of second and third letters that rarely occur after a given first letter.
 
-Additional letters, beginning with the fourth and fifth, are processed in pairs. Note that the last letter of names with an even numbers of letters (e.g. the "x" in "Marx") will never be processed. I can fix this in the future if needed, though.
+Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible.
 
 My goal with Cube Codes is (1) to have fewer "collisions" at the length code length compared to traditional Cutter methods and (2) to thus provide more hospitality for future authors, assuming their names aren't _too_ dissimilar from the 2 million I found from Library of Congress. 
 
