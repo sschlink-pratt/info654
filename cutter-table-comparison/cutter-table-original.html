@@ -1,0 +1,153 @@
+<!--
+https://www.loc.gov/aba/pcc/053/table.html
+
+https://web.library.yale.edu/cataloging/shelflisting-intro/shelflist-order-yul-file/lc-cutter-table
+
+Email Lindaman asking what the "best" version of the Cutter table procedure is these days!
+
+A messy JavaScript implementation: 
+https://www.aurochs.org/ucllcccutter/ 
+which is allegedly based on [this procedure](https://ucldata.atlassian.net/wiki/spaces/LibraryServices/pages/49349347/UCL+Cutter+Guidelines#UCLCutterGuidelines-LibraryofCongressClassificationCutters). UCL is just [University College London](https://www.ucl.ac.uk), though?!
+
+
+## 4/8
+Looks like there's at least two "versions": Cutter Four-Figure Table vs. the Cutter-Sanborn Four-Figure Table. Source: https://help.oclc.org/Metadata_Services/WebDewey/Dewey_Cutter_Program/Dewey_Cutter_Program_instructions#Select_a_table
+
+Is ["LC Cutter table"](https://web.library.yale.edu/cataloging/shelflisting-intro/shelflist-order-yul-file/lc-cutter-table) a third thing?
+
+A page from Ole Miss that ChatGPT found?! https://home.olemiss.edu/~dtcheng/LC-cutter-table.htm
+
+Maybe we just go from this table in the Wikipedia entry for now...
+https://en.wikipedia.org/wiki/Cutter_Expansive_Classification#Cutter_numbers
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sam Schlinkert">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cutter Calculator</title>
+        <style>
+          input[type='number'] {
+            width: 55px; 
+          }
+          #cutter-number, #desired-length {
+            font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+          }
+        </style>
+    </head>
+    <body>
+        <label for="author">Author name (family name first):</label>
+        <input type="text" id="author" name="author" onkeyup="getCutter()">
+        <br><br>
+        <!-- <button type="button" onclick="getCutter()" id="get-cutter">Get Cutter</button> -->
+        <label for="total-cutter-length">Total Cutter code length:</label>
+        <input type="range" id="total-cutter-length" name="total-cutter-length" min="1" max="10" value="5">
+        <span id="desired-length">5</span>
+
+        <p id="cutter-number"></p>
+        <script>
+            // C => 3
+            function asNum(letter) {
+                return letter.charCodeAt(0) - 64;
+            }
+            // Whenever user moves the slider...
+            document.getElementById("total-cutter-length").oninput = function() {
+                // update display
+                document.getElementById("desired-length").innerHTML = document.getElementById("total-cutter-length").value;
+                // and call the main getCutter function
+                getCutter()
+            };
+            function getCutter() {
+                // clear to start
+                document.getElementById("cutter-number").innerHTML = "";
+
+                let author = document.getElementById('author').value.toUpperCase();
+                let numberOfCharactersToParse = document.getElementById("total-cutter-length").value;
+
+                if (author == "" || author == null) {
+                    return;
+                }
+                let author_as_numbers = [];
+                for (let i = 0; i < author.length; i++) {
+                    author_as_numbers.push(asNum(author[i]));
+                } 
+                const vowels = ["A", "E", "I", "O", "U"];
+                let first_letter = author[0];
+                let cutter = first_letter;
+                if (numberOfCharactersToParse == 1) {
+                    // we're done
+                    document.getElementById("cutter-number").innerHTML = cutter;
+                    return;
+                }
+
+                if (author_as_numbers[0] == asNum("S")) {
+                    if (author_as_numbers[1] == asNum("A")) { cutter += "2"; }
+                    else if (author_as_numbers[1] == asNum("C")) { if (author[2] == "H") { cutter += "3"} }
+                    else if (author_as_numbers[1] == asNum("E")) { cutter += "4" }
+                    else if (asNum("H") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("I")) {
+                        cutter += "5";
+                    }
+                    else if (asNum("M") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("P")) {
+                        cutter += "6";
+                    }
+                    else if (author_as_numbers[1] == asNum("T")) { cutter += "7"; }
+                    else if (author_as_numbers[1] == asNum("U")) { cutter += "8"; }
+                    else if (asNum("W") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("Z")) {
+                        cutter += "9";
+                    }
+                } else if ((author_as_numbers[0] == asNum("Q") && author_as_numbers[1] == asNum("U")) || !vowels.includes(author_as_numbers[0])) {
+                    // The following could be a switch statement...
+                    if (author_as_numbers[1] == asNum("A")) { cutter += "3"; }
+                    else if (author_as_numbers[1] == asNum("E")) { cutter += "4"; }
+                    else if (author_as_numbers[1] == asNum("I")) { cutter += "5"; }
+                    else if (author_as_numbers[1] == asNum("O")) { cutter += "6"; }
+                    else if (author_as_numbers[1] == asNum("R")) { cutter += "7"; }
+                    else if (author_as_numbers[1] == asNum("U")) { cutter += "8"; }
+                    else if (author_as_numbers[1] == asNum("Y")) { cutter += "9"; }
+                } else if (vowels.includes(author_as_numbers[0])) {
+                    if (author_as_numbers[1] == asNum("B")) { cutter += "2"; }
+                    else if (author_as_numbers[1] == asNum("D")) { cutter += "3"; }
+                    else if (asNum("L") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("M")) {
+                        cutter += "4";
+                    }
+                    else if (author_as_numbers[1] == asNum("N")) { cutter += "5"; }
+                    else if (author_as_numbers[1] == asNum("P")) { cutter += "6"; }
+                    else if (author_as_numbers[1] == asNum("R")) { cutter += "7"; }
+                    else if (asNum("S") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("T")) {
+                        cutter += "8";
+                    }
+                    else if (asNum("U") <= author_as_numbers[1] && author_as_numbers[1] <= asNum("Y")) {
+                        cutter += "9";
+                    }
+                }     
+                // Additional letters
+                if (author_as_numbers.length < numberOfCharactersToParse) {
+                    numberOfCharactersToParse = author_as_numbers.length;
+                }
+                console.log(numberOfCharactersToParse);
+                
+                for (let i = 2; i < numberOfCharactersToParse; i++) {
+                    if (asNum("A") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("D")) {
+                        cutter += "3";
+                    } else if (asNum("E") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("H")) {
+                        cutter += "4";
+                    } else if (asNum("I") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("L")) {
+                        cutter += "5";
+                    } else if (asNum("M") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("O")) {
+                        cutter += "6";
+                    } else if (asNum("P") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("S")) {
+                        cutter += "7";
+                    } else if (asNum("T") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("V")) {
+                        cutter += "8";
+                    } else if (asNum("W") <= author_as_numbers[i] && author_as_numbers[i] <= asNum("Z")) {
+                        cutter += "9";
+                    }
+                }
+                if (cutter != null) {
+                    document.getElementById("cutter-number").innerHTML = cutter;
+                }
+            }
+        </script>
+    </body>
+</html>
