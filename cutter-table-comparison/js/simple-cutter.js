@@ -9,6 +9,22 @@ for (let i = 0; i < ALPHABET.length; i++) {
     LETTER_VALUES[ALPHABET[i]] = i + 1;
 }
 
+// Replace accented characters, convert to upper case, and 
+// remove punctuation and white space from text inputted name
+function cleanName(name) {
+    let unaccentedName = replaceAccents(name);
+    return unaccentedName.toUpperCase()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+        .replace(/\s+/g, '');
+}
+// Replace accented characters with their Roman "equivalents",
+// so ä, á, å all become "a", as per LC G 100 https://loc.gov/aba/publications/FreeCSM/G100.pdf
+function replaceAccents(str) {
+    return str
+        .replace("ø", "o")
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 // A little helper function that, given a letter, given its assigned number
 function asNum(letter) {
     return LETTER_VALUES[letter] || 0;
@@ -145,7 +161,7 @@ function getCutter() {
     cutterNumberEl.innerHTML = '<br>';
 
     // Make author name uppercase, than remove any and all punctuation and spaces.
-    const author = authorInput.value.toUpperCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s+/g, '');
+    const author = cleanName(authorInput.value);
     // If author is now empty, return nothing now.
     if (!author) return;
 
