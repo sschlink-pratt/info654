@@ -12,7 +12,7 @@ After the first letter of the author name, the next two digits range from 10 to 
 
 Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible.
 
-My goal with Cube Codes is (1) to have fewer "collisions" at the length code length compared to traditional Cutter methods and (2) to thus provide more hospitality for future authors, assuming their names aren't _too_ dissimilar from the 2 million I found from Library of Congress. 
+My **goals** with Cube Codes is (1) to have fewer "collisions" at the length code length compared to traditional Cutter methods and (2) to thus provide more hospitality for future authors, assuming their names aren't _too_ dissimilar from the 2 million I found from Library of Congress. 
 
 But in its current form, Cube Code is not always more efficient. Cube Code only needs 4 total characters to make "Respini, Eva" distinct from "Ressa, Maria", whereas the traditional Cutter method needs 5. However, these scores are reversed when we try "Cutler" vs. "Cutter". Perhaps with more testing and tweaking we can make improvements, but in general I'm impressed by how well the simpler Cutter table performs. A classic for a reason, I guess!
 
