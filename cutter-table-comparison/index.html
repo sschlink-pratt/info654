@@ -47,13 +47,13 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
         </style>
         <script type="text/javascript" src="js/simple-cutter.js"></script>
         <script type="text/javascript" src="js/cc.js"></script>
-        <!-- <script type="text/javascript" src="js/s-code.js"></script> -->
+        <script type="text/javascript" src="js/educated-cutter.js"></script>
         <script type="text/javascript" src="js/s-cube.js"></script>
     </head>
     <body>
         <h1>Cutter Code Comparison</h1>
         <label for="author">Author name (family name first):</label>
-        <input type="text" id="author" name="author" onkeyup="getCutter(); getBanerjeeCutter(); getCubeCode();" size="30">
+        <input type="text" id="author" name="author" onkeyup="getCutter(); getBanerjeeCutter(); getECode(); getCubeCode();" size="30">
         <br><br>
         <!-- <button type="button" onclick="getCutter()" id="get-cutter">Get Cutter</button> -->
         <label for="total-cutter-length">Total Cutter code length (max):</label>
@@ -70,6 +70,10 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 <td class="code" id="banerjee-code"></td>
             </tr>
             <tr>
+                <td>Educated Cutter:</td>
+                <td class="code" id="e-code"></td>
+            </tr>
+            <tr>
                 <td>Cube Code:</td>
                 <td class="code" id="cube-code"></td>
             </tr>
@@ -83,7 +87,10 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
             The Banerjee Code is from <a href="https://catalogingcalculator.com/">the Cataloging Calculator</a> by Kyle Banerjee. (I lightly adapted <a href="https://github.com/banerjek/cataloging-calculator/blob/master/cutter.js#L71">Banerjee's original code</a> for this site to work with it.)
         </p>
         <p class="about">
-            The Cube Code is my best attempt at an improved version. I analyzed letter frequencies in 2 million author names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. After the first letter of the author name, the next two digits range from 01 to 99 to best describe the second and third letters of the author's name, based on the first three letters of the author's name. A single number, like 22, is reused for ranges of combinations of second and third letters that rarely occur after a given first letter. Starting with 01 is probably too aggressive? Additional letters are processed in pairs, if possible.
+            The "Educated Cutter" code is my attempt at setting ranges for first-two letter combinations <em>not</em> specified in G 63 (e.g. names starting with "AC"). My goal was to make all the "buckets" for each digit as having an equal chance of being used (thereby increasing room for growth/hospitality) while staying compatible with G 63. To do this I analyzed letter frequencies in 2 million author names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>.
+        </p>
+        <p class="about">
+            The Cube Code is my best attempt at an improved version of the Cutter Code <em>if allowed to break from G 63</em>. I used my frequency analysis tool to create 26 "tables", each with 636 values ranging for 1 to 99, representing the second and third letters in the given name. A single number, like 27, is reused for ranges of combinations of second and third letters. Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible, to better optimize bucket sizes based on letter frequency observed.
         </p>
 
         <h3>Lingering Questions</h3>
@@ -102,7 +109,7 @@ ChatGPT says "the Swanson-Swift 1969 revision is standard" version of Cutter-San
                 // and re-make the cutterCode (even though that's not technically efficient)
                 getCutter();
                 getBanerjeeCutter();
-                // getSCode();
+                getECode()
                 getCubeCode();
             });
         </script>
