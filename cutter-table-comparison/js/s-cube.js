@@ -37,12 +37,22 @@ let sCubeAdditionalLookUpTable = [21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22
 // one-letter map for the last letter
 const last_letter_map = [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9];
 
-function getCubeCode() {
-    const cubeNumberEl = document.getElementById('cube-code');
-    const author = document.getElementById('author').value
-        .toUpperCase()
+function cleanName(name) {
+    let unaccentedName = removeAccents(name);
+    return unaccentedName.toUpperCase()
         .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
         .replace(/\s+/g, '');
+}
+// Replace accented characters with their Roman "equivalents",
+// so ä, á, å all become "a", as per LC G 100 https://loc.gov/aba/publications/FreeCSM/G100.pdf
+function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace("ø", "o");
+}
+
+function getCubeCode() {
+    const cubeNumberEl = document.getElementById('cube-code');
+    const author = cleanName(document.getElementById('author').value);
     const lengthInput = document.getElementById('total-cutter-length');
     let numberOfCharactersToDisplay = parseInt(lengthInput.value, 10);
 
