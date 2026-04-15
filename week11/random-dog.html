@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Random Dog</title>
+        <!-- first, some CSS -->
+        <style>
+            #dog {
+                height: 420px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Now, here's our HTML (the bones of our page) -->
+        <button type="button" onclick="getRandomDog()" id="dog-button">Show me a good doggo!</button><br><br>
+        <img id="dog" alt="a dog">
+        <script>
+            // And finally, our JavaScript (the brains of the operation)
+            async function getRandomDog() {
+                let apiURL = "https://random.dog/woof.json";
+                var response = await fetch(apiURL);
+                var jsonData = await response.json();
+                let urlOfRandomImgOfaDog = jsonData["url"];
+
+                // Now let's overwrite the img source (src) of <img id="dog"> to 
+                // the URL of our random dog image!
+                document.getElementById('dog').src = urlOfRandomImgOfaDog;
+            }
+        </script>
+    </body>
+</html>
