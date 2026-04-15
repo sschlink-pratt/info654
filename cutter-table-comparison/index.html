@@ -20,8 +20,11 @@
             td {
                 padding-right: 20px;
             }
-            .code, #desired-length {
+            .code, pre, #desired-length {
                 font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+            }
+            pre {
+                font-size: 11px;
             }
             .about,h2,h3,h4 {
                 max-width: 700px;
@@ -80,16 +83,53 @@
             To create both the "Educated Cutter" Code and the Cube Code, I needed realistic letter frequency data, preferable from real author-name data. I got 2 million names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. I then fed these names to a <a href="https://github.com/sts10/cube-code-maker">Rust program I wrote to analyze letter frequencies</a>. 
         </p>
         <p class="about">
-            For Cube Code, the program creates 26 "tables" (one for each possible first-letter of a name). Each of these tables has 676 values ranging for 1 to 99, representing the second and third letters in the given name. A single number, like 27, is reused for ranges of combinations of second and third letters if they appear infrequently in the data. Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible, to better optimize bucket sizes based on letter frequency observed. There are, delightfully, no exceptions for "Qu" or "Sch" with Cube Code.
+            For Cube Code, the program creates 26 "tables" (one for each possible first-letter of a name). Each of these tables has 676 values ranging for 1 to 99, representing the second and third letters in the given name. A single number, like 25, is reused for ranges of combinations of second and third letters if they appear infrequently in the data. 
+        </p>
+        <p class="about">
+            Here's the Cube Code table or "map" for names that begin with the letter "B":
+        </p>
+        <pre>
+BA_   01, 01, 01, 02, 03, 03, 03, 04, 04, 05, 05, 06, 07, 08, 09, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 21, 
+BB_   22, 23, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+BC_   25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+      25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+      25, 26, 26, 27, 28, 28, 28, 29, 29, 29, 29, 31, 32, 33, 34, 35, 36, 36, 37, 38, 39, 41, 42, 43, 43, 43, 
+      44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 
+      44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 
+      44, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 
+      45, 45, 45, 46, 46, 46, 47, 47, 47, 47, 47, 47, 48, 48, 48, 48, 48, 48, 49, 51, 51, 51, 51, 51, 51, 51, 
+      51, 51, 51, 51, 51, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 
+      52, 53, 54, 54, 54, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 
+      56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 
+      56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 56, 
+      56, 56, 57, 57, 58, 58, 58, 59, 59, 61, 61, 61, 62, 62, 63, 64, 64, 64, 65, 66, 67, 68, 69, 71, 71, 72, 
+      72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 
+      72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 
+      72, 73, 74, 75, 76, 77, 78, 78, 78, 79, 81, 81, 81, 81, 81, 82, 83, 84, 85, 85, 85, 86, 87, 87, 87, 87, 
+      87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 
+      87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 
+      87, 87, 87, 88, 89, 89, 89, 91, 91, 91, 91, 91, 92, 92, 92, 92, 92, 93, 94, 95, 96, 97, 98, 98, 98, 98, 
+      98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 
+      98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 
+      98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 
+BY_   98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 
+BZ_   98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
+        </pre>
+        <p class="about">
+            We can see that so few author names start with "BB", "BC", or "BD" that the number <code>25</code> covers almost the entire range from "BBD" to "BEA". Thus, all names in that range, like "<strong>Bea</strong>gle", become "B25". In contrast, "BAD" is such a common starting triple that it gets its own number: <code>02</code>.
+        </p>
+        <p class="about">
+            Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible, to better optimize bucket sizes based on letter frequencies observed. 
         </p>
 
         <h3>Still To Do</h3>
         <p class="about">
-            I'd love to add the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" to this tool. Might just need a better OCR tool!
+            I'd love to add the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" to this tool.
         </p>
         <h3>Links to code, contact info</h3>
         <p class="about">
-            The code for this website and the JavaScript that powers the form above is <a href="https://github.com/sschlink-pratt/info654/tree/main/cutter-table-comparison">on GitHub</a>, as well as <a href="https://github.com/sts10/cube-code-maker">the program I wrote to create the underlying letter-frequency data</a>.
+            The code for this website and the JavaScript that powers the form above is <a href="https://github.com/sschlink-pratt/cutter-table-comparison">on GitHub</a>, as well as <a href="https://github.com/sts10/cube-code-maker">the program I wrote to create the underlying letter-frequency data</a>.
         </p>
         <p class="about">
             If you have any thoughts, please feel free to email me at sschlink [at] pratt dot edu. 
