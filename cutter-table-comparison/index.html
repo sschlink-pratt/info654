@@ -80,7 +80,7 @@
         </p>
         <h3>How I used letter-frequency analysis to make Educated Cutter Codes and Cube Codes</h3>
         <p class="about">
-            To create both the "Educated Cutter" Code and the Cube Code, I needed realistic letter frequency data, preferable from real author-name data. I got 2 million names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. I then fed these names to a <a href="https://github.com/sts10/cube-code-maker">Rust program I wrote to analyze letter frequencies</a>. 
+            To create both the "Educated Cutter" Code and the Cube Code, I needed realistic letter frequency data, preferable from real author-name data. I got 2 million names from <a href="https://loc.gov/cds/products/MDSConnect-books_all.html">the Library of Congress</a>. I then fed these names in to a <a href="https://github.com/sts10/cube-code-maker">Rust program I wrote to analyze letter frequencies</a>. 
         </p>
         <p class="about">
             For Cube Code, the program creates 26 "tables" (one for each possible first-letter of a name). Each of these tables has 676 values ranging for 1 to 99, representing the second and third letters in the given name. A single number, like 25, is reused for ranges of combinations of second and third letters if they appear infrequently in the data. 
@@ -89,11 +89,12 @@
             Here's the Cube Code table or "map" for names that begin with the letter "B":
         </p>
         <pre>
+      B_A B_B B_C B_D B_E                                                                             B_Y B_Z
 BA_   01, 01, 01, 02, 03, 03, 03, 04, 04, 05, 05, 06, 07, 08, 09, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19, 21, 
 BB_   22, 23, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
 BC_   25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
-      25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
-      25, 26, 26, 27, 28, 28, 28, 29, 29, 29, 29, 31, 32, 33, 34, 35, 36, 36, 37, 38, 39, 41, 42, 43, 43, 43, 
+BD_   25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+BE_   25, 26, 26, 27, 28, 28, 28, 29, 29, 29, 29, 31, 32, 33, 34, 35, 36, 36, 37, 38, 39, 41, 42, 43, 43, 43, 
       44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 
       44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 
       44, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 
@@ -117,15 +118,18 @@ BY_   98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98
 BZ_   98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
         </pre>
         <p class="about">
-            We can see that so few author names start with "BB", "BC", or "BD" that the number <code>25</code> covers almost the entire range from "BBD" to "BEA". Thus, all names in that range, like "<strong>Bea</strong>gle", become "B25". In contrast, "BAD" is such a common starting triple that it gets its own number: <code>02</code>.
+            We can see that so few author names start with "BB", "BC", or "BD" that the number <code>25</code> covers almost the entire range from "BBD" to "BEA". Thus, all names in that range, like "<strong>Bea</strong>gle", become "B25". (In contrast, "BAD" is such a common starting triple that it gets its own number: <code>02</code>.)
         </p>
         <p class="about">
-            Additional letters, beginning with the fourth and fifth, are processed in pairs, if possible, to better optimize bucket sizes based on letter frequencies observed. 
+            Additional letters, beginning with the fourth and fifth ("GL" in "BEAGLE"), are similarly processed in pairs, if possible, to better optimize bucket sizes based on letter frequencies observed. 
         </p>
 
         <h3>Still To Do</h3>
         <p class="about">
             I'd love to add the "Cutter-Sanborn Three-Figure Author Tables (Swanson-Swift 1969 revision)" to this tool.
+        </p>
+        <p class="about">
+            With Cube Code, I'm not convinced I made the best assumptions in creating the process. If the goal is to have similar author names generate unique codes with the fewest code figures possible, there might be a better approach to assigning ranges based on letter-frequency data.
         </p>
         <h3>Links to code, contact info</h3>
         <p class="about">
